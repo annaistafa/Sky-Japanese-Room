@@ -1,0 +1,272 @@
+# Sky-Japanese-Room
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sky Japanese - JLPT N5 Learning System</title>
+    <style>
+        :root {
+            --sky-main: #00a8e8;
+            --sky-light: #e1f5fe;
+            --sky-bg: #f0faff;
+            --cloud-white: #ffffff;
+            --text-dark: #2c3e50;
+            --accent-green: #4caf50;
+            --accent-red: #e53935;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+
+        body { background-color: var(--sky-bg); color: var(--text-dark); display: flex; height: 100vh; overflow: hidden; }
+
+        /* Sidebar */
+        nav { width: 260px; background: var(--cloud-white); padding: 25px; display: flex; flex-direction: column; border-right: 1px solid #d1e9f6; }
+        .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 40px; color: var(--sky-main); font-size: 1.4rem; font-weight: 800; cursor: pointer; }
+        
+        nav ul { list-style: none; }
+        nav li { 
+            padding: 14px 18px; margin-bottom: 8px; border-radius: 12px; cursor: pointer; 
+            transition: all 0.2s ease; display: flex; align-items: center; gap: 12px; font-weight: 500; color: #546e7a; 
+        }
+        nav li.active { background: var(--sky-main); color: white; box-shadow: 0 4px 12px rgba(0, 168, 232, 0.3); }
+        nav li:hover:not(.active) { background: var(--sky-light); color: var(--sky-main); }
+
+        /* Main Content */
+        main { flex: 1; padding: 40px; overflow-y: auto; scroll-behavior: smooth; }
+        .content-section { display: none; animation: fadeIn 0.4s ease; }
+        .content-section.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Cards & UI */
+        .glass-card { background: rgba(255, 255, 255, 0.9); border-radius: 24px; padding: 25px; border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 10px 30px rgba(0, 168, 232, 0.05); margin-bottom: 25px; }
+        
+        .grid-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+
+        /* Detail Material Styles */
+        .material-box { background: white; padding: 20px; border-radius: 15px; border-left: 5px solid var(--sky-main); margin-bottom: 15px; }
+        .example-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .example-table td { padding: 10px; border-bottom: 1px solid #eee; }
+        .jp-text { font-size: 1.2rem; color: #000; }
+
+        /* Functional Tools */
+        .flashcard-box { 
+            perspective: 1000px; width: 300px; height: 200px; margin: 20px auto; cursor: pointer; 
+        }
+        .flashcard-inner { 
+            position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; 
+            transform-style: preserve-3d; 
+        }
+        .flashcard-box.flipped .flashcard-inner { transform: rotateY(180deg); }
+        .card-front, .card-back { 
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            border-radius: 20px; border: 2px solid var(--sky-main); background: white;
+        }
+        .card-back { transform: rotateY(180deg); background: var(--sky-light); }
+
+        .btn { 
+            background: var(--sky-main); color: white; border: none; padding: 12px 25px; 
+            border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; 
+        }
+        .btn:hover { opacity: 0.9; transform: scale(1.02); }
+        
+        .quiz-option { 
+            padding: 15px; border: 1px solid #e1f5fe; border-radius: 12px; margin-bottom: 10px; 
+            cursor: pointer; transition: 0.2s; 
+        }
+        .quiz-option:hover { background: var(--sky-bg); border-color: var(--sky-main); }
+        .correct { background: #c8e6c9 !important; border-color: var(--accent-green) !important; }
+        .wrong { background: #ffcdd2 !important; border-color: var(--accent-red) !important; }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="brand" onclick="showSection('dashboard')">
+            <span>☁️</span> Sky Japanese
+        </div>
+        <ul>
+            <li onclick="showSection('dashboard')" class="menu-item active" id="menu-dashboard">🏠 Dashboard</li>
+            <li onclick="showSection('grammar')" class="menu-item" id="menu-grammar">📝 Tata Bahasa (Grammar)</li>
+            <li onclick="showSection('kanji')" class="menu-item" id="menu-kanji">🏮 Kanji N5</li>
+            <li onclick="showSection('quiz')" class="menu-item" id="menu-quiz">🎯 Latihan Soal</li>
+        </ul>
+    </nav>
+
+    <main id="main-content">
+        
+        <!-- SECTION: DASHBOARD -->
+        <section id="dashboard" class="content-section active">
+            <h1>Ohayou, Andi! 🌤️</h1>
+            <p style="margin-bottom: 25px;">Mari lanjutkan progres N5 kamu.</p>
+            
+            <div class="grid-dashboard">
+                <div class="glass-card">
+                    <h3>Progres Belajar</h3>
+                    <div style="font-size: 2.5rem; color: var(--sky-main); font-weight: 800; text-align: center; margin: 20px 0;">55%</div>
+                    <p style="text-align: center; font-size: 0.9rem; color: #667;">Tinggal 45% lagi menuju N5!</p>
+                </div>
+                <div class="glass-card">
+                    <h3>Kata Hari Ini</h3>
+                    <div class="flashcard-box" onclick="this.classList.toggle('flipped')">
+                        <div class="flashcard-inner">
+                            <div class="card-front"><span style="font-size: 3rem;">学生</span><small>Klik untuk arti</small></div>
+                            <div class="card-back"><strong>Gakusei</strong><br>Siswa / Student</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: GRAMMAR -->
+        <section id="grammar" class="content-section">
+            <h1>Materi Tata Bahasa N5</h1>
+            <p>Penjelasan detail partikel dan struktur kalimat dasar.</p>
+            
+            <div class="material-box">
+                <h3>1. Partikel は (Wa) - Penanda Subjek/Topik</h3>
+                <p>Digunakan untuk menunjukkan topik pembicaraan. Meskipun ditulis 'ha', dibaca 'wa'.</p>
+                <table class="example-table">
+                    <tr><td class="jp-text">わたし<b>は</b> Andi です。</td><td>Saya <b>adalah</b> Andi.</td></tr>
+                    <tr><td class="jp-text">これ<b>は</b> 本 です。</td><td>Ini <b>adalah</b> buku.</td></tr>
+                </table>
+            </div>
+
+            <div class="material-box">
+                <h3>2. Partikel の (No) - Kepemilikan</h3>
+                <p>Menghubungkan dua kata benda untuk menunjukkan milik atau asal.</p>
+                <table class="example-table">
+                    <tr><td class="jp-text">わたし<b>の</b> くるま。</td><td>Mobil <b>milik</b> saya.</td></tr>
+                    <tr><td class="jp-text">日本<b>の</b> カメラ。</td><td>Kamera (dari) Jepang.</td></tr>
+                </table>
+            </div>
+            <button class="btn" onclick="showSection('quiz')">Coba Latihan Grammar</button>
+        </section>
+
+        <!-- SECTION: KANJI -->
+        <section id="kanji" class="content-section">
+            <h1>Kamus Kanji N5</h1>
+            <div class="grid-dashboard">
+                <div class="glass-card">
+                    <span style="font-size: 2.5rem; color: var(--sky-main);">山</span>
+                    <h4>Yama (Gunung)</h4>
+                    <hr style="margin: 10px 0; opacity: 0.2;">
+                    <p>Onyomi: SAN | Kunyomi: yama</p>
+                    <small>Contoh: 富士山 (Fujisan)</small>
+                </div>
+                <div class="glass-card">
+                    <span style="font-size: 2.5rem; color: var(--sky-main);">川</span>
+                    <h4>Kawa (Sungai)</h4>
+                    <hr style="margin: 10px 0; opacity: 0.2;">
+                    <p>Onyomi: SEN | Kunyomi: kawa</p>
+                    <small>Contoh: ナイル川 (Nairu-gawa)</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: QUIZ -->
+        <section id="quiz" class="content-section">
+            <h1>Latihan Soal (Quiz)</h1>
+            <div class="glass-card" id="quiz-container">
+                <p id="question-text" style="font-size: 1.2rem; margin-bottom: 20px; font-weight: bold;">
+                    Tunggu sebentar, soal sedang disiapkan...
+                </p>
+                <div id="options-container"></div>
+                <div id="quiz-feedback" style="margin-top: 20px; font-weight: bold;"></div>
+                <br>
+                <button class="btn" onclick="loadNextQuestion()">Soal Berikutnya</button>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // 1. Navigation Logic
+        function showSection(sectionId) {
+            // Sembunyikan semua section
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            // Tampilkan section yang dipilih
+            document.getElementById(sectionId).classList.add('active');
+
+            // Update menu active state
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.getElementById('menu-' + sectionId).classList.add('active');
+
+            // Jika masuk ke quiz, muat soal
+            if(sectionId === 'quiz') loadNextQuestion();
+        }
+
+        // 2. Quiz Logic
+        const quizData = [
+            {
+                q: "わたし ___ 日本語を べんきょうします。",
+                options: ["は (wa)", "の (no)", "も (mo)", "に (ni)"],
+                correct: 0,
+                info: "Partikel 'wa' digunakan untuk menandai subjek 'Saya'."
+            },
+            {
+                q: "Itu adalah buku ___ saya (Kepunyaan).",
+                options: ["は", "の", "を", "が"],
+                correct: 1,
+                info: "Partikel 'no' menunjukkan kepemilikan (Watashi NO hon)."
+            },
+            {
+                q: "Apa arti dari Kanji '山'?",
+                options: ["Sungai", "Orang", "Gunung", "Sawah"],
+                correct: 2,
+                info: "Yama berarti Gunung."
+            }
+        ];
+
+        let currentQuestion = 0;
+
+        function loadNextQuestion() {
+            const quizContainer = document.getElementById('options-container');
+            const questionText = document.getElementById('question-text');
+            const feedback = document.getElementById('quiz-feedback');
+            
+            feedback.innerHTML = "";
+            quizContainer.innerHTML = "";
+            
+            let data = quizData[currentQuestion % quizData.length];
+            questionText.innerText = data.q;
+
+            data.options.forEach((opt, index) => {
+                const div = document.createElement('div');
+                div.className = 'quiz-option';
+                div.innerText = opt;
+                div.onclick = () => checkAnswer(index, data.correct, data.info, div);
+                quizContainer.appendChild(div);
+            });
+
+            currentQuestion++;
+        }
+
+        function checkAnswer(selected, correct, info, element) {
+            const feedback = document.getElementById('quiz-feedback');
+            const allOptions = document.querySelectorAll('.quiz-option');
+            
+            // Disable further clicks
+            allOptions.forEach(opt => opt.style.pointerEvents = 'none');
+
+            if(selected === correct) {
+                element.classList.add('correct');
+                feedback.innerHTML = "✨ Benar! " + info;
+                feedback.style.color = "var(--accent-green)";
+            } else {
+                element.classList.add('wrong');
+                allOptions[correct].classList.add('correct');
+                feedback.innerHTML = "❌ Kurang tepat. " + info;
+                feedback.style.color = "var(--accent-red)";
+            }
+        }
+    </script>
+</body>
+</html>
